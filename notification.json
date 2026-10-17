@@ -1,1 +1,8 @@
+{
+  "enabled": true,
+  "pass": "mobile-2026-10-17",
+  "message": "Edward Script Center теперь доступен для мобильных устройств!\n\nСкрипты работают через лаунчер с поддержкой MonetLoader. В каталоге уже есть:\n• Auto Upgrade Cards\n• BarrelSell\n• Central Market\n• Mining Tools\n• OilTime\n• RadiusLavki\n• VIP Piar\n• Box Opener\n\nМеню каталога открывается командой /ec. Следите за новыми скриптами в нашем Telegram.",
+  "update_url": "",
+  "required_version": ""
+}
 
