@@ -107,7 +107,7 @@
     },
     {
       "name": "Box Opener",
-      "file": "BoxOpener.lua",
+      "file": "Box Opener Mobile.lua",
       "description": "Массовое открытие ларцов и ящиков из инвентаря",
       "author": "Edward",
       "version": "1.0",
