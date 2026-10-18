@@ -5,16 +5,16 @@ script_version('1.0')
 pcall(require, 'moonloader')
 pcall(require, 'sampfuncs')
 local sampev = require 'samp.events'
--- ==================================================================== 
--- MonetLoader / mimgui: слой совместимости со старым ПК-API imgui.
--- Скрипт работает в "виртуальных" координатах (как на ПК), а на границе
--- с mimgui всё умножается на K (масштаб под экран телефона).
--- ====================================================================
+
+
+
+
+
 local imgui = (function()
     local m = require 'mimgui'
     local sh = setmetatable({}, {__index = m})
     local gsr = getScreenResolution
-    local FORCE_SCALE = nil -- можно вручную задать, например 1.5 (если интерфейс слишком мелкий/крупный)
+    local FORCE_SCALE = nil 
 
     local K = 1
     do
@@ -50,7 +50,7 @@ local imgui = (function()
     local function fromR(v) return {x = v.x / K, y = v.y / K} end
     sh.ImVec2 = V
 
-    -- ---- позиции / размеры (виртуальные <-> реальные) ----
+    
     function sh.GetCursorScreenPos() return fromR(m.GetCursorScreenPos()) end
     function sh.SetCursorScreenPos(v) m.SetCursorScreenPos(toR(v)) end
     function sh.GetCursorPosX() return m.GetCursorPosX() / K end
@@ -107,10 +107,10 @@ local imgui = (function()
     function sh.IsItemHovered(f) return m.IsItemHovered(f or 0) end
     function sh.IsWindowHovered(f) return m.IsWindowHovered(f or 0) end
     function sh.IsMouseClicked(b, r) return m.IsMouseClicked(b or 0, r or false) end
-    function sh.IsKeyPressed() return false end -- на телефоне нет клавиатуры
+    function sh.IsKeyPressed() return false end 
     function sh.SwitchContext() end
 
-    -- ---- текст без printf-форматирования ----
+    
     local TU = m.TextUnformatted or function(t) m.Text((tostring(t):gsub('%%', '%%%%'))) end
     function sh.Text(t) TU(tostring(t)) end
     function sh.TextColored(c, t)
@@ -121,7 +121,7 @@ local imgui = (function()
     end
     function sh.SetTooltip(t) m.BeginTooltip() TU(tostring(t)) m.EndTooltip() end
 
-    -- ---- старые ImBool / ImInt / ImFloat с полем .v ----
+    
     local function boxed(ctor, init)
         local c = ctor(init)
         return setmetatable({}, {
@@ -142,7 +142,7 @@ local imgui = (function()
         return flex('ii', m.InputInt, function() return l, i._c, step, fast end, function() return l, i._c, step, fast, 0 end)
     end
 
-    -- ---- draw list (координаты в виртуальном пространстве) ----
+    
     local DL = {}
     DL.__index = DL
     local dl = setmetatable({}, DL)
@@ -2420,6 +2420,7 @@ do
         state.pickedTotal = state.pickedTotal + 1
         local pending = state.pending
         state.pending = nil
+        state.takeFails, state.takeBroken = 0, false
         if cfg.track.orders then beginActive(tonumber(kg), trim(customer), pending and pending.order) end
         if pending and os.clock() - pending.time < 10 then
             state.pickedByScript = state.pickedByScript + 1
@@ -2489,7 +2490,7 @@ do
         end
     end
 
-    -- ================= ПК: CEF-события (packet 220 / type 17) и квест-текст (172) =================
+    
     local function parsePc(bs)
         raknetBitStreamSetReadOffset(bs, 0)
         raknetBitStreamIgnoreBits(bs, 8)
@@ -2511,11 +2512,11 @@ do
         end
     end
 
-    -- ================= МОБАЙЛ: packet 220 / type 84 =================
-    -- layout: [220][84][iface u8][sub u8][len u16][enc u8][text]
-    -- iface 68: sub 0 = категория, sub 1 = JSON-список заказов
-    -- iface 6 : sub 0 = JSON-уведомление {"text":"Вы загрузили N кг..."}
-    -- iface 8 : sub 8 = премия за активный заказ, sub 9 = секунды до дедлайна (тикает раз в секунду)
+    
+    
+    
+    
+    
     local M_LIST, M_NOTICE, M_HUD = 68, 6, 8
     local mobileCategory = ''
     local mobileSeen = false
@@ -2530,7 +2531,7 @@ do
 
     function Orders.onMobile(bs)
         local iface = raknetBitStreamReadInt8(bs) % 256
-        -- ранний выход: чужие интерфейсы не декодируем вообще
+        
         if iface ~= M_LIST and iface ~= M_NOTICE and iface ~= M_HUD then return end
         local sub = raknetBitStreamReadInt8(bs) % 256
         if iface == M_LIST then
@@ -2584,7 +2585,7 @@ do
         end
     end
 
-    -- исходящие: закрытие окна заказов (type 63, iface 68, f1=0) и дамп кликов
+    
     local function hexOf(bs)
         local n = raknetBitStreamGetNumberOfBytesUsed(bs)
         raknetBitStreamSetReadOffset(bs, 0)
@@ -2600,10 +2601,10 @@ do
         if t == 63 then
             local iface = raknetBitStreamReadInt8(bs) % 256
             local f1 = raknetBitStreamReadInt32(bs)
-            -- f1 = 0: кнопка "закрыть" в списке заказов
+            
             if iface == M_LIST and f1 == 0 and state.windowOpen then
                 setWindowOpen(false)
-                state.closedAt = -100 -- без "задержки" карточки: исчезает сразу
+                state.closedAt = -100 
             end
             if Orders.dumpClicks then
                 local line = hexOf(bs)
@@ -2629,30 +2630,38 @@ do
     end
 
     local function sendCefCommand(command)
-        local bs = raknetNewBitStream()
-        raknetBitStreamWriteInt8(bs, 220)
-        raknetBitStreamWriteInt8(bs, 18)
-        raknetBitStreamWriteInt16(bs, #command)
-        raknetBitStreamWriteString(bs, command)
-        raknetBitStreamWriteInt32(bs, 0)
-        raknetSendBitStreamEx(bs, 2, 9, 6)
-        raknetDeleteBitStream(bs)
+        local ok = pcall(function()
+            local bs = raknetNewBitStream()
+            raknetBitStreamWriteInt8(bs, 220)
+            raknetBitStreamWriteInt8(bs, 18)
+            raknetBitStreamWriteInt16(bs, #command)
+            raknetBitStreamWriteString(bs, command)
+            raknetBitStreamWriteInt32(bs, 0)
+            local sent = raknetSendBitStreamEx(bs, 2, 9, 6)
+            raknetDeleteBitStream(bs)
+            if sent == false then error('send failed') end
+        end)
+        return ok
     end
     Orders.sendCefCommand = sendCefCommand
 
-    -- клик по заказу на мобиле: [220][63][iface u8][f1 i32][f2 i32][len u8][text]
-    -- f1 = 1 (взять), f2 = индекс заказа (с нуля)
+    
+    
     local MOBILE_CLICK = {iface = 68, f1 = 1}
     local function sendMobileClick(index)
-        local bs = raknetNewBitStream()
-        raknetBitStreamWriteInt8(bs, 220)
-        raknetBitStreamWriteInt8(bs, 63)
-        raknetBitStreamWriteInt8(bs, MOBILE_CLICK.iface)
-        raknetBitStreamWriteInt32(bs, MOBILE_CLICK.f1)
-        raknetBitStreamWriteInt32(bs, index)
-        raknetBitStreamWriteInt8(bs, 0)
-        raknetSendBitStreamEx(bs, 2, 9, 6)
-        raknetDeleteBitStream(bs)
+        local ok = pcall(function()
+            local bs = raknetNewBitStream()
+            raknetBitStreamWriteInt8(bs, 220)
+            raknetBitStreamWriteInt8(bs, 63)
+            raknetBitStreamWriteInt8(bs, MOBILE_CLICK.iface)
+            raknetBitStreamWriteInt32(bs, MOBILE_CLICK.f1)
+            raknetBitStreamWriteInt32(bs, index)
+            raknetBitStreamWriteInt8(bs, 0)
+            local sent = raknetSendBitStreamEx(bs, 2, 9, 6)
+            raknetDeleteBitStream(bs)
+            if sent == false then error('send failed') end
+        end)
+        return ok
     end
 
     function Orders.demoActive() return os.clock() < state.demoUntil end
@@ -2670,6 +2679,7 @@ do
         local reason
         local lingering = not state.windowOpen and now - state.closedAt < cfg.orders.linger
         if not cfg.orders.enabled then reason = 'off'
+        elseif state.takeBroken then reason = 'closed'
         elseif not (state.windowOpen or lingering) then reason = 'closed'
         elseif #state.list == 0 then reason = 'empty'
         else
@@ -2707,18 +2717,39 @@ do
         return (cfg.orders.enabled and (state.windowOpen or os.clock() - state.closedAt < cfg.orders.linger)) or Orders.demoActive() or state.editing or (cardAlpha or 0) > 0.01
     end
 
-    function Orders.pickBest()
+    
+    
+    local TAKE_MAX_FAILS = 3
+    function Orders.registerTakeFail()
+        state.pending = nil
+        state.takeFails = (state.takeFails or 0) + 1
+        if state.takeFails >= TAKE_MAX_FAILS and not state.takeBroken then
+            state.takeBroken = true
+            setWindowOpen(false)
+            state.closedAt = -100
+            say('\208\157\208\181 \209\131\208\180\208\176\208\187\208\190\209\129\209\140 \208\178\208\183\209\143\209\130\209\140 \208\183\208\176\208\186\208\176\208\183 - \208\186\208\189\208\190\208\191\208\186\208\176 \209\129\208\186\209\128\209\139\209\130\208\176 (/dbo - \208\178\209\128\209\131\209\135\208\189\209\131\209\142).')
+        end
+    end
+
+    function Orders.pickBest(force)
         local now = os.clock()
+        if state.takeBroken and not force then return false end
         if not (cfg.orders.enabled and state.windowOpen) or now - state.lastPickAt < 1.5 then return false end
         local _, best = Orders.rank(now)
         if not best then return false end
         state.lastPickAt = now
         state.pending = {order = best.order, time = now}
+        local sent
+        if state.mobile then sent = sendMobileClick(best.order.index)
+        else sent = sendCefCommand('sideMenu.property.submit|' .. best.order.index) end
+        if not sent then
+            Orders.registerTakeFail()
+            return false
+        end
         if state.mobile then
-            sendMobileClick(best.order.index)
             setWindowOpen(false)
-            state.closedAt = -100 -- карточка пропадает сразу после нажатия
-        else sendCefCommand('sideMenu.property.submit|' .. best.order.index) end
+            state.closedAt = -100 
+        end
         say('\208\145\208\181\209\128\209\131 \208\183\208\176\208\186\208\176\208\183: ' .. best.order.customer .. ' (' .. best.order.cargo .. ', ' .. fmt(best.order.payout) .. ' \209\128\209\131\208\177.)')
         return true
     end
@@ -2843,6 +2874,7 @@ do
         else
             state.lastPos = nil
         end
+        if state.pending and now - state.pending.time > 6 then Orders.registerTakeFail() end
         if state.windowOpen and now - state.updatedAt > 600 then state.windowOpen = false end
         if state.hintPending and state.windowOpen and now - state.updatedAt >= 0.5 then
             state.hintPending = false
@@ -5164,7 +5196,7 @@ function imgui.OnDrawFrame()
     if Orders.needsDraw(Orders.cardAlpha()) then
         if not guarded('card', Orders.drawCard) then Orders.lastReason = 'error' end
     end
-    if cfg.orders.enabled and (Orders.state.windowOpen or Orders.demoActive()) and not Orders.state.editing and not menu.v then guarded('take', Orders.drawTake) end
+    if cfg.orders.enabled and (Orders.state.windowOpen or Orders.demoActive()) and not (Orders.state.takeBroken and not Orders.demoActive()) and not Orders.state.editing and not menu.v then guarded('take', Orders.drawTake) end
     if menu.v and not guarded('menu', drawMenu) then closeMenu() end
 end
 
@@ -5182,7 +5214,7 @@ function main()
     imgui.MB.theme = true
     Data.checkWeek()
 
-    sampRegisterChatCommand('dbo', function() Orders.pickBest() end)
+    sampRegisterChatCommand('dbo', function() Orders.pickBest(true) end)
     sampRegisterChatCommand('dbhex', function()
         Orders.dumpClicks = not Orders.dumpClicks
         say('Click dump: ' .. (Orders.dumpClicks and 'ON - tap an order, copy the CLICK line' or 'OFF'))
