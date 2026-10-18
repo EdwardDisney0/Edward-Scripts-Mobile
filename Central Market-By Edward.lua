@@ -68,10 +68,10 @@ local tpl_bufs = {}
 local tpl_delay_bufs = {}
 
 local QUALITY_TAGS = {
-    "Улучшение оружия", "Унив. тюнинг", "Виз. тюнинг", "Тех. тюнинг", "Авто. номер",
-    "Аксессуар", "Сертификат", "Приманка", "Саженец", "Улучшение",
-    "Винила", "Объект", "Одежда", "Телефон", "Урожай", "Чертёж",
-    "Предмет", "Актер", "Ларец", "Рыба", "Семя", "Туша", "Шкура", "Ящик"
+    "Г“Г«ГіГ·ГёГҐГ­ГЁГҐ Г®Г°ГіГ¦ГЁГї", "Г“Г­ГЁГў. ГІГѕГ­ГЁГ­ГЈ", "Г‚ГЁГ§. ГІГѕГ­ГЁГ­ГЈ", "Г’ГҐГµ. ГІГѕГ­ГЁГ­ГЈ", "ГЂГўГІГ®. Г­Г®Г¬ГҐГ°",
+    "ГЂГЄГ±ГҐГ±Г±ГіГ Г°", "Г‘ГҐГ°ГІГЁГґГЁГЄГ ГІ", "ГЏГ°ГЁГ¬Г Г­ГЄГ ", "Г‘Г Г¦ГҐГ­ГҐГ¶", "Г“Г«ГіГ·ГёГҐГ­ГЁГҐ",
+    "Г‚ГЁГ­ГЁГ«Г ", "ГЋГЎГєГҐГЄГІ", "ГЋГ¤ГҐГ¦Г¤Г ", "Г’ГҐГ«ГҐГґГ®Г­", "Г“Г°Г®Г¦Г Г©", "Г—ГҐГ°ГІВёГ¦",
+    "ГЏГ°ГҐГ¤Г¬ГҐГІ", "ГЂГЄГІГҐГ°", "Г‹Г Г°ГҐГ¶", "ГђГ»ГЎГ ", "Г‘ГҐГ¬Гї", "Г’ГіГёГ ", "ГГЄГіГ°Г ", "ГџГ№ГЁГЄ"
 }
 
 
@@ -118,7 +118,7 @@ local FILE_BUY_PROFILES = ROOT_DIR .. 'cm_buy_profiles.json'
 
 local Prefs = {
     auto_name = false,
-    shop_name = "Telegram @edward_scripts",
+    shop_name = "By Edward",
     auto_pr = { active = false, items = {} },
     dialog_delay = 150,  
     cef_delay = 1200,
@@ -207,7 +207,7 @@ function events.onShowDialog(id, style, title, b1, b2, text)
     local clean_text = stripColorTags(text)
 
 
-    if id == 8 and (clean_title:find("Название лавки") or clean_title:find("Название")) then
+    if id == 8 and (clean_title:find("ГЌГ Г§ГўГ Г­ГЁГҐ Г«Г ГўГЄГЁ") or clean_title:find("ГЌГ Г§ГўГ Г­ГЁГҐ")) then
         if Prefs.auto_name and Prefs.shop_name ~= "" then
             lua_thread.create(function()
                 wait(200)
@@ -224,7 +224,7 @@ function events.onShowDialog(id, style, title, b1, b2, text)
                 local current_idx = 0
                 for line in text:gmatch("[^\r\n]+") do
                     local c_line = stripColorTags(line):gsub("%s+", "")
-                    if c_line:find("Настройкиинвентаря") then 
+                    if c_line:find("ГЌГ Г±ГІГ°Г®Г©ГЄГЁГЁГ­ГўГҐГ­ГІГ Г°Гї") then 
                         list_idx = (style == 5 and current_idx - 1) or current_idx 
                         break 
                     end
@@ -247,9 +247,9 @@ function events.onShowDialog(id, style, title, b1, b2, text)
                 
                 for line in text:gmatch("[^\r\n]+") do
                     local c_line = stripColorTags(line):gsub("%s+", "")
-                    if c_line:find("Новыйинвентарь") or c_line:find("НовыйCEFинвентарь") then
+                    if c_line:find("ГЌГ®ГўГ»Г©ГЁГ­ГўГҐГ­ГІГ Г°Гј") or c_line:find("ГЌГ®ГўГ»Г©CEFГЁГ­ГўГҐГ­ГІГ Г°Гј") then
                         list_idx = (style == 5 and current_idx - 1) or current_idx
-                        if c_line:find("Включено") or c_line:find("Включен") then 
+                        if c_line:find("Г‚ГЄГ«ГѕГ·ГҐГ­Г®") or c_line:find("Г‚ГЄГ«ГѕГ·ГҐГ­") then 
                             is_enabled = true 
                         end
                         break
@@ -259,10 +259,10 @@ function events.onShowDialog(id, style, title, b1, b2, text)
                 
                 if list_idx ~= -1 then
                     if is_enabled then
-                        sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Перезапуск CEF инвентаря...", -1)
+                        sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}ГЏГҐГ°ГҐГ§Г ГЇГіГ±ГЄ CEF ГЁГ­ГўГҐГ­ГІГ Г°Гї...", -1)
                         sampSendDialogResponse(id, 1, list_idx, "")
                     else
-                        sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Чтение пакетов инвентаря...", -1)
+                        sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Г—ГІГҐГ­ГЁГҐ ГЇГ ГЄГҐГІГ®Гў ГЁГ­ГўГҐГ­ГІГ Г°Гї...", -1)
                         RunState.inventory_scan.stage = "parsing"
                         sampSendDialogResponse(id, 1, list_idx, "")
                     end
@@ -275,36 +275,36 @@ function events.onShowDialog(id, style, title, b1, b2, text)
     end
 
     if RunState.buying_scan.active then
-        if RunState.buying_scan.stage == 'waiting_dialog' and (title:find("Управление лавкой") or title:find("Лавка") or id == 9) then
+        if RunState.buying_scan.stage == 'waiting_dialog' and (title:find("Г“ГЇГ°Г ГўГ«ГҐГ­ГЁГҐ Г«Г ГўГЄГ®Г©") or title:find("Г‹Г ГўГЄГ ") or id == 9) then
             RunState.buying_scan.stage = 'waiting_category_menu'
             local idx = 0
             local target_idx = 1
             for line in text:gmatch("[^\r\n]+") do
-                if stripColorTags(line):find("Выставить товар на скупку") then target_idx = idx break end
+                if stripColorTags(line):find("Г‚Г»Г±ГІГ ГўГЁГІГј ГІГ®ГўГ Г° Г­Г  Г±ГЄГіГЇГЄГі") then target_idx = idx break end
                 idx = idx + 1
             end
             sampSendDialogResponse(id, 1, target_idx, "")
             return false
         end
         
-        if RunState.buying_scan.stage == 'waiting_category_menu' and (title:find("Скупка:") or id == 10 or id == 801) then
+        if RunState.buying_scan.stage == 'waiting_category_menu' and (title:find("Г‘ГЄГіГЇГЄГ :") or id == 10 or id == 801) then
             RunState.buying_scan.stage = 'waiting_full_list_menu'
             local idx = 0
             local target_idx = 1
             for line in text:gmatch("[^\r\n]+") do
-                if stripColorTags(line):find("Поиск по категориям") then target_idx = idx break end
+                if stripColorTags(line):find("ГЏГ®ГЁГ±ГЄ ГЇГ® ГЄГ ГІГҐГЈГ®Г°ГЁГїГ¬") then target_idx = idx break end
                 idx = idx + 1
             end
             sampSendDialogResponse(id, 1, target_idx, "")
             return false
         end
         
-        if RunState.buying_scan.stage == 'waiting_full_list_menu' and (id == 911 or id == 802 or title:find("Категории для поиска") or text:find("Весь список")) then
+        if RunState.buying_scan.stage == 'waiting_full_list_menu' and (id == 911 or id == 802 or title:find("ГЉГ ГІГҐГЈГ®Г°ГЁГЁ Г¤Г«Гї ГЇГ®ГЁГ±ГЄГ ") or text:find("Г‚ГҐГ±Гј Г±ГЇГЁГ±Г®ГЄ")) then
             RunState.buying_scan.stage = 'processing_page'
             local idx = 0
             local target_idx = -1
             for line in text:gmatch("[^\r\n]+") do
-                if stripColorTags(line):find("Весь список") then target_idx = idx break end
+                if stripColorTags(line):find("Г‚ГҐГ±Гј Г±ГЇГЁГ±Г®ГЄ") then target_idx = idx break end
                 idx = idx + 1
             end
             if target_idx == -1 then target_idx = idx - 1 end
@@ -312,14 +312,14 @@ function events.onShowDialog(id, style, title, b1, b2, text)
             return false
         end
         
-        if RunState.buying_scan.stage == 'processing_page' and (id == 10 or title:find("Скупка:") or title:find("Весь список") or title:find("Страница")) then
+        if RunState.buying_scan.stage == 'processing_page' and (id == 10 or title:find("Г‘ГЄГіГЇГЄГ :") or title:find("Г‚ГҐГ±Гј Г±ГЇГЁГ±Г®ГЄ") or title:find("Г‘ГІГ°Г Г­ГЁГ¶Г ")) then
             processBuyingPage(text, id)
             return false
         end
         
         if RunState.buying_scan.stage == 'closing' then
             sampSendDialogResponse(id, 0, 0, "")
-            if title:find("Управление лавкой") or title:find("Лавка") or id == 9 then
+            if title:find("Г“ГЇГ°Г ГўГ«ГҐГ­ГЁГҐ Г«Г ГўГЄГ®Г©") or title:find("Г‹Г ГўГЄГ ") or id == 9 then
                 RunState.buying_scan.active = false
                 menu_open[0] = true
             end
@@ -328,20 +328,20 @@ function events.onShowDialog(id, style, title, b1, b2, text)
     end
 
     if RunState.buying.active then
-        if RunState.buying.stage == 'waiting_dialog' and (title:find("Управление лавкой") or title:find("Лавка") or id == 9) then
+        if RunState.buying.stage == 'waiting_dialog' and (title:find("Г“ГЇГ°Г ГўГ«ГҐГ­ГЁГҐ Г«Г ГўГЄГ®Г©") or title:find("Г‹Г ГўГЄГ ") or id == 9) then
             RunState.buying.current_item = buy_cfg[RunState.buying.current_idx]
             RunState.buying.stage = 'waiting_search_menu'
             sendDialogReplyDelayed(id, 1, 1, "")
             return false
         end
 
-        if RunState.buying.stage == 'waiting_search_menu' and (id == 10 or id == 801 or title:find("Скупка:")) then
+        if RunState.buying.stage == 'waiting_search_menu' and (id == 10 or id == 801 or title:find("Г‘ГЄГіГЇГЄГ :")) then
             RunState.buying.stage = 'waiting_search_input'
             sendDialogReplyDelayed(id, 1, 0, "")
             return false
         end
 
-        if RunState.buying.stage == 'waiting_search_input' and (id == 909 or text:find("название") or text:find("индекс")) then
+        if RunState.buying.stage == 'waiting_search_input' and (id == 909 or text:find("Г­Г Г§ГўГ Г­ГЁГҐ") or text:find("ГЁГ­Г¤ГҐГЄГ±")) then
             RunState.buying.stage = 'waiting_amount_price'
             local item_id = RunState.buying.current_item.model_id or RunState.buying.current_item.index
             if not item_id then
@@ -356,14 +356,14 @@ function events.onShowDialog(id, style, title, b1, b2, text)
             return false
         end
 
-        if RunState.buying.stage == 'waiting_amount_price' and (id == 11 or text:find("через запятую") or text:find("количество") or text:find("цену") or text:find("штук") or text:find("цвет")) then
+        if RunState.buying.stage == 'waiting_amount_price' and (id == 11 or text:find("Г·ГҐГ°ГҐГ§ Г§Г ГЇГїГІГіГѕ") or text:find("ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ®") or text:find("Г¶ГҐГ­Гі") or text:find("ГёГІГіГЄ") or text:find("Г¶ГўГҐГІ")) then
             local input_str = ""
             local text_lower = text:lower()
 
-            if text_lower:find("цвет аксессуара") or text_lower:find("и цвет") then
+            if text_lower:find("Г¶ГўГҐГІ Г ГЄГ±ГҐГ±Г±ГіГ Г°Г ") or text_lower:find("ГЁ Г¶ГўГҐГІ") then
                 local color_id = math.max(0, math.floor(RunState.buying.current_item.amount or 0))
                 input_str = string.format("%d,%d", math.floor(RunState.buying.current_item.price), color_id)
-            elseif text_lower:find("количество") or text_lower:find("штук") then
+            elseif text_lower:find("ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ®") or text_lower:find("ГёГІГіГЄ") then
                 local amount = math.max(1, math.floor(RunState.buying.current_item.amount or 1))
                 input_str = string.format("%d,%d", amount, math.floor(RunState.buying.current_item.price))
             else
@@ -384,21 +384,21 @@ function events.onShowDialog(id, style, title, b1, b2, text)
 
         if RunState.buying.stage == 'closing' then
             sampSendDialogResponse(id, 0, 0, "")
-            if title:find("Управление лавкой") or title:find("Лавка") or id == 9 then
+            if title:find("Г“ГЇГ°Г ГўГ«ГҐГ­ГЁГҐ Г«Г ГўГЄГ®Г©") or title:find("Г‹Г ГўГЄГ ") or id == 9 then
                 RunState.buying.active = false
                 menu_open[0] = true
-                sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Все товары выставлены на скупку!", -1)
+                sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Г‚Г±ГҐ ГІГ®ГўГ Г°Г» ГўГ»Г±ГІГ ГўГ«ГҐГ­Г» Г­Г  Г±ГЄГіГЇГЄГі!", -1)
             end
             return false
         end
     end
 
     if RunState.selling.active then
-        if RunState.selling.stage == 'waiting_dialog' and (title:find("Управление лавкой") or title:find("Лавка") or id == 9) then
+        if RunState.selling.stage == 'waiting_dialog' and (title:find("Г“ГЇГ°Г ГўГ«ГҐГ­ГЁГҐ Г«Г ГўГЄГ®Г©") or title:find("Г‹Г ГўГЄГ ") or id == 9) then
             local target_idx = 0
             local current = 0
             for line in text:gmatch("[^\r\n]+") do
-                if stripColorTags(line):find("Выставить товар на продажу") then target_idx = current break end
+                if stripColorTags(line):find("Г‚Г»Г±ГІГ ГўГЁГІГј ГІГ®ГўГ Г° Г­Г  ГЇГ°Г®Г¤Г Г¦Гі") then target_idx = current break end
                 current = current + 1
             end
             sampSendDialogResponse(id, 1, target_idx, "")
@@ -406,20 +406,20 @@ function events.onShowDialog(id, style, title, b1, b2, text)
             RunState.selling.available_items = {}
             RunState.selling.last_packet_time = 0
             RunState.selling.stage = 'waiting_cef_data'
-            sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Сбор данных лавки...", -1)
+            sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Г‘ГЎГ®Г° Г¤Г Г­Г­Г»Гµ Г«Г ГўГЄГЁ...", -1)
             return false
         end
         
-        if RunState.selling.stage == 'waiting_input' and (id == 240 or text:find("цену") or text:find("через запятую") or text:find("количество")) then
+        if RunState.selling.stage == 'waiting_input' and (id == 240 or text:find("Г¶ГҐГ­Гі") or text:find("Г·ГҐГ°ГҐГ§ Г§Г ГЇГїГІГіГѕ") or text:find("ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ®")) then
             local input_str = ""
             local text_lower = text:lower()
             
-            if text_lower:find("через запятую") or text_lower:find("введите количество") or text_lower:find("укажите количество") then
+            if text_lower:find("Г·ГҐГ°ГҐГ§ Г§Г ГЇГїГІГіГѕ") or text_lower:find("ГўГўГҐГ¤ГЁГІГҐ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ®") or text_lower:find("ГіГЄГ Г¦ГЁГІГҐ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ®") then
                 local sell_amount = RunState.selling.current_item.amount
                 if RunState.selling.current_item.use_max then
                     local clean_dialog_text = stripColorTags(text)
-                    local max_qty = clean_dialog_text:match("[Вв]ыставить%s*(%d+)%s*шт")
-                    if not max_qty then max_qty = clean_dialog_text:match("(%d+)%s*шт%.?%s*$") end
+                    local max_qty = clean_dialog_text:match("[Г‚Гў]Г»Г±ГІГ ГўГЁГІГј%s*(%d+)%s*ГёГІ")
+                    if not max_qty then max_qty = clean_dialog_text:match("(%d+)%s*ГёГІ%.?%s*$") end
                     if max_qty then sell_amount = tonumber(max_qty) end
                 end
                 input_str = string.format("%d,%d", sell_amount, RunState.selling.current_item.price)
@@ -434,7 +434,7 @@ function events.onShowDialog(id, style, title, b1, b2, text)
         
         if RunState.selling.stage == 'closing' then
             sampSendDialogResponse(id, 0, 0, "")
-            if title:find("Управление лавкой") or title:find("Лавка") or id == 9 then
+            if title:find("Г“ГЇГ°Г ГўГ«ГҐГ­ГЁГҐ Г«Г ГўГЄГ®Г©") or title:find("Г‹Г ГўГЄГ ") or id == 9 then
                 RunState.selling.active = false
                 menu_open[0] = true
             end
@@ -610,65 +610,65 @@ imgui.OnFrame(
                     icon = fa('box_open')
                     items_count = #stock_items
                     if RunState.inventory_scan.stage == "waiting_user" then
-                        title = u8"Ожидание инвентаря"
-                        subtitle = u8"Пожалуйста, откройте свой инвентарь"
+                        title = u8"ГЋГ¦ГЁГ¤Г Г­ГЁГҐ ГЁГ­ГўГҐГ­ГІГ Г°Гї"
+                        subtitle = u8"ГЏГ®Г¦Г Г«ГіГ©Г±ГІГ , Г®ГІГЄГ°Г®Г©ГІГҐ Г±ГўГ®Г© ГЁГ­ГўГҐГ­ГІГ Г°Гј"
                         is_waiting = true
                     elseif RunState.inventory_scan.stage == "settings" then
-                        title = u8"Настройка инвентаря"
-                        subtitle = u8"Подготовка интерфейса CEF..."
+                        title = u8"ГЌГ Г±ГІГ°Г®Г©ГЄГ  ГЁГ­ГўГҐГ­ГІГ Г°Гї"
+                        subtitle = u8"ГЏГ®Г¤ГЈГ®ГІГ®ГўГЄГ  ГЁГ­ГІГҐГ°ГґГҐГ©Г±Г  CEF..."
                     elseif RunState.inventory_scan.stage == "parsing" then
-                        title = u8"Чтение предметов"
-                        subtitle = u8"Сбор данных... Не закрывайте окно"
+                        title = u8"Г—ГІГҐГ­ГЁГҐ ГЇГ°ГҐГ¤Г¬ГҐГІГ®Гў"
+                        subtitle = u8"Г‘ГЎГ®Г° Г¤Г Г­Г­Г»Гµ... ГЌГҐ Г§Г ГЄГ°Г»ГўГ Г©ГІГҐ Г®ГЄГ­Г®"
                     end
                 elseif RunState.buying_scan.active then
                     icon = fa('shop')
                     items_count = #RunState.buying_scan.all_items
                     if RunState.buying_scan.stage == 'waiting_dialog' then
-                        title = u8"Ожидание лавки"
-                        subtitle = u8"Откройте диалоговое окно лавки"
+                        title = u8"ГЋГ¦ГЁГ¤Г Г­ГЁГҐ Г«Г ГўГЄГЁ"
+                        subtitle = u8"ГЋГІГЄГ°Г®Г©ГІГҐ Г¤ГЁГ Г«Г®ГЈГ®ГўГ®ГҐ Г®ГЄГ­Г® Г«Г ГўГЄГЁ"
                         is_waiting = true
                     elseif RunState.buying_scan.stage == 'waiting_category_menu' or RunState.buying_scan.stage == 'waiting_full_list_menu' then
-                        title = u8"Навигация по меню"
-                        subtitle = u8"Открываем полный список товаров..."
+                        title = u8"ГЌГ ГўГЁГЈГ Г¶ГЁГї ГЇГ® Г¬ГҐГ­Гѕ"
+                        subtitle = u8"ГЋГІГЄГ°Г»ГўГ ГҐГ¬ ГЇГ®Г«Г­Г»Г© Г±ГЇГЁГ±Г®ГЄ ГІГ®ГўГ Г°Г®Гў..."
                     elseif RunState.buying_scan.stage == 'processing_page' then
-                        title = u8"Сканирование товаров"
-                        subtitle = u8"Считывание страницы: " .. RunState.buying_scan.current_page
+                        title = u8"Г‘ГЄГ Г­ГЁГ°Г®ГўГ Г­ГЁГҐ ГІГ®ГўГ Г°Г®Гў"
+                        subtitle = u8"Г‘Г·ГЁГІГ»ГўГ Г­ГЁГҐ Г±ГІГ°Г Г­ГЁГ¶Г»: " .. RunState.buying_scan.current_page
                     elseif RunState.buying_scan.stage == 'closing' then
-                        title = u8"Завершение"
-                        subtitle = u8"Автоматическое закрытие диалогов..."
+                        title = u8"Г‡Г ГўГҐГ°ГёГҐГ­ГЁГҐ"
+                        subtitle = u8"ГЂГўГІГ®Г¬Г ГІГЁГ·ГҐГ±ГЄГ®ГҐ Г§Г ГЄГ°Г»ГІГЁГҐ Г¤ГЁГ Г«Г®ГЈГ®Гў..."
                     end
                 elseif RunState.selling.active then
                     icon = fa('paper_plane')
                     items_count = RunState.selling.total
                     if RunState.selling.stage == 'waiting_dialog' then
-                        title = u8"Ожидание лавки"
-                        subtitle = u8"Откройте диалоговое окно лавки"
+                        title = u8"ГЋГ¦ГЁГ¤Г Г­ГЁГҐ Г«Г ГўГЄГЁ"
+                        subtitle = u8"ГЋГІГЄГ°Г®Г©ГІГҐ Г¤ГЁГ Г«Г®ГЈГ®ГўГ®ГҐ Г®ГЄГ­Г® Г«Г ГўГЄГЁ"
                         is_waiting = true
                     elseif RunState.selling.stage == 'waiting_cef' then
-                        title = u8"Загрузка инвентаря"
-                        subtitle = u8"Ожидание интерфейса лавки..."
+                        title = u8"Г‡Г ГЈГ°ГіГ§ГЄГ  ГЁГ­ГўГҐГ­ГІГ Г°Гї"
+                        subtitle = u8"ГЋГ¦ГЁГ¤Г Г­ГЁГҐ ГЁГ­ГІГҐГ°ГґГҐГ©Г±Г  Г«Г ГўГЄГЁ..."
                     elseif RunState.selling.stage == 'waiting_input' or RunState.selling.stage == 'next_item' then
-                        title = u8"Выставление товаров"
-                        local cur_name = RunState.selling.current_item and u8(RunState.selling.current_item.name) or u8"Товар"
-                        subtitle = string.format(u8"Товар (%d из %d):\n%s", RunState.selling.current_idx, RunState.selling.total, cur_name)
+                        title = u8"Г‚Г»Г±ГІГ ГўГ«ГҐГ­ГЁГҐ ГІГ®ГўГ Г°Г®Гў"
+                        local cur_name = RunState.selling.current_item and u8(RunState.selling.current_item.name) or u8"Г’Г®ГўГ Г°"
+                        subtitle = string.format(u8"Г’Г®ГўГ Г° (%d ГЁГ§ %d):\n%s", RunState.selling.current_idx, RunState.selling.total, cur_name)
                     elseif RunState.selling.stage == 'closing' then
-                        title = u8"Завершение"
-                        subtitle = u8"Закрываем окна..."
+                        title = u8"Г‡Г ГўГҐГ°ГёГҐГ­ГЁГҐ"
+                        subtitle = u8"Г‡Г ГЄГ°Г»ГўГ ГҐГ¬ Г®ГЄГ­Г ..."
                     end
                 elseif RunState.buying.active then
                     icon = fa('cart_arrow_down')
                     items_count = RunState.buying.total
                     if RunState.buying.stage == 'waiting_dialog' then
-                        title = u8"Ожидание лавки"
-                        subtitle = u8"Откройте диалоговое окно лавки"
+                        title = u8"ГЋГ¦ГЁГ¤Г Г­ГЁГҐ Г«Г ГўГЄГЁ"
+                        subtitle = u8"ГЋГІГЄГ°Г®Г©ГІГҐ Г¤ГЁГ Г«Г®ГЈГ®ГўГ®ГҐ Г®ГЄГ­Г® Г«Г ГўГЄГЁ"
                         is_waiting = true
                     elseif RunState.buying.stage == 'closing' then
-                        title = u8"Завершение"
-                        subtitle = u8"Закрываем окна..."
+                        title = u8"Г‡Г ГўГҐГ°ГёГҐГ­ГЁГҐ"
+                        subtitle = u8"Г‡Г ГЄГ°Г»ГўГ ГҐГ¬ Г®ГЄГ­Г ..."
                     else
-                        title = u8"Скупка товаров"
-                        local cur_name = RunState.buying.current_item and u8(RunState.buying.current_item.name) or u8"Товар"
-                        subtitle = string.format(u8"Товар (%d из %d):\n%s", RunState.buying.current_idx, RunState.buying.total, cur_name)
+                        title = u8"Г‘ГЄГіГЇГЄГ  ГІГ®ГўГ Г°Г®Гў"
+                        local cur_name = RunState.buying.current_item and u8(RunState.buying.current_item.name) or u8"Г’Г®ГўГ Г°"
+                        subtitle = string.format(u8"Г’Г®ГўГ Г° (%d ГЁГ§ %d):\n%s", RunState.buying.current_idx, RunState.buying.total, cur_name)
                     end
                 end
 
@@ -707,7 +707,7 @@ imgui.OnFrame(
                 local sub_y = drawCentered(subtitle, title_y + 6, Palette.text_secondary)
                 
                 if items_count > 0 then
-                    local badge_txt = u8"Найдено товаров: " .. items_count
+                    local badge_txt = u8"ГЌГ Г©Г¤ГҐГ­Г® ГІГ®ГўГ Г°Г®Гў: " .. items_count
                     local bsz = imgui.CalcTextSize(badge_txt)
                     local bx = p.x + (mod_w - (bsz.x + 24))/2
                     local by = sub_y + 10
@@ -737,7 +737,7 @@ imgui.OnFrame(
                 dl:AddRect(imgui.ImVec2(btn_x, btn_y), imgui.ImVec2(btn_x + btn_w, btn_y + btn_h), imgui.ColorConvertFloat4ToU32(Palette.accent_danger), 12.0, 15, 1.5)
 
                 imgui.PushFont(fnt_main)
-                local c_txt = u8"Остоновить Сканирование"
+                local c_txt = u8"ГЋГ±ГІГ®Г­Г®ГўГЁГІГј Г‘ГЄГ Г­ГЁГ°Г®ГўГ Г­ГЁГҐ"
                 local csz = imgui.CalcTextSize(c_txt)
                 dl:AddText(imgui.ImVec2(btn_x + (btn_w - csz.x)/2, btn_y + (btn_h - csz.y)/2), imgui.ColorConvertFloat4ToU32(Palette.accent_danger), c_txt)
                 imgui.PopFont()
@@ -795,12 +795,12 @@ imgui.OnFrame(
             local tab_btn_w = (window_width - 40) / 4
             local prev_tab_col = current_tab == 2
             if prev_tab_col then imgui.PushStyleColor(imgui.Col.Button, Palette.accent_primary) end
-            if imgui.Button(u8"Скупка", imgui.ImVec2(tab_btn_w, 58)) then current_tab = 2 end
+            if imgui.Button(u8"Г‘ГЄГіГЇГЄГ ", imgui.ImVec2(tab_btn_w, 58)) then current_tab = 2 end
             if prev_tab_col then imgui.PopStyleColor() end
             imgui.SameLine()
             local is_sell_tab = current_tab == 1
             if is_sell_tab then imgui.PushStyleColor(imgui.Col.Button, Palette.accent_success) end
-            if imgui.Button(u8"Продажа", imgui.ImVec2(tab_btn_w, 58)) then current_tab = 1 end
+            if imgui.Button(u8"ГЏГ°Г®Г¤Г Г¦Г ", imgui.ImVec2(tab_btn_w, 58)) then current_tab = 1 end
             if is_sell_tab then imgui.PopStyleColor() end
             imgui.SameLine()
             imgui.PushStyleColor(imgui.Col.Button, imgui.ImVec4(0.16, 0.62, 0.86, 1.0))
@@ -819,20 +819,20 @@ imgui.OnFrame(
                 end)
 
                 if opened then
-                    sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Открываю Telegram...", -1)
+                    sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}ГЋГІГЄГ°Г»ГўГ Гѕ Telegram...", -1)
                 else
                     if type(setClipboardText) == "function" then
                         pcall(setClipboardText, tg_url)
                     end
                     sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Telegram: {00FFFF}" .. tg_url, -1)
-                    sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Ссылка скопирована в буфер обмена, вставьте её в браузер/Telegram", -1)
+                    sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Г‘Г±Г»Г«ГЄГ  Г±ГЄГ®ГЇГЁГ°Г®ГўГ Г­Г  Гў ГЎГіГґГҐГ° Г®ГЎГ¬ГҐГ­Г , ГўГ±ГІГ ГўГјГІГҐ ГҐВё Гў ГЎГ°Г ГіГ§ГҐГ°/Telegram", -1)
                 end
             end
             imgui.PopStyleColor(3)
             imgui.SameLine()
             local is_settings_tab = current_tab == 3
             if is_settings_tab then imgui.PushStyleColor(imgui.Col.Button, Palette.accent_primary) end
-            if imgui.Button(u8"Настройки", imgui.ImVec2(tab_btn_w, 58)) then current_tab = 3 end
+            if imgui.Button(u8"ГЌГ Г±ГІГ°Г®Г©ГЄГЁ", imgui.ImVec2(tab_btn_w, 58)) then current_tab = 3 end
             if is_settings_tab then imgui.PopStyleColor() end
             imgui.Separator()
 
@@ -842,7 +842,7 @@ imgui.OnFrame(
                 local target_config = is_sell and sell_cfg or buy_cfg
                 local cfg_path = is_sell and FILE_CFG_SELL or FILE_CFG_BUY
 
-                if imgui.Button(u8"Обновить список", imgui.ImVec2(560, 52)) then
+                if imgui.Button(u8"ГЋГЎГ­Г®ГўГЁГІГј Г±ГЇГЁГ±Г®ГЄ", imgui.ImVec2(560, 52)) then
                     if is_sell then
                         menu_open[0] = false
                         startInventoryScan()
@@ -850,7 +850,7 @@ imgui.OnFrame(
                         RunState.buying_scan = {active=true, stage='waiting_dialog', current_page=1, all_items={}, current_dialog_id=nil}
                         watchShopProximity(function() return RunState.buying_scan end)
                         if lastSeenInteractPromptId then sendMarketInteract(lastSeenInteractPromptId) end
-                        sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Подойдите к лавке и нажмите кнопку взаимодействия!", -1)
+                        sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}ГЏГ®Г¤Г®Г©Г¤ГЁГІГҐ ГЄ Г«Г ГўГЄГҐ ГЁ Г­Г Г¦Г¬ГЁГІГҐ ГЄГ­Г®ГЇГЄГі ГўГ§Г ГЁГ¬Г®Г¤ГҐГ©Г±ГІГўГЁГї!", -1)
                         menu_open[0] = false
                     end
                 end
@@ -861,26 +861,26 @@ imgui.OnFrame(
                 local is_running
                 if is_sell then is_running = RunState.selling.active else is_running = RunState.buying.active end
                 if is_running then
-                    if imgui.Button(u8"Стоп", imgui.ImVec2(300, 52)) then
+                    if imgui.Button(u8"Г‘ГІГ®ГЇ", imgui.ImVec2(300, 52)) then
                         if is_sell then RunState.selling.active = false else RunState.buying.active = false end
-                        sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Остановлено пользователем!", -1)
+                        sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}ГЋГ±ГІГ Г­Г®ГўГ«ГҐГ­Г® ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«ГҐГ¬!", -1)
                     end
                 else
-                    local btn_label = is_sell and u8"Выставить" or u8"Начать скупку"
+                    local btn_label = is_sell and u8"Г‚Г»Г±ГІГ ГўГЁГІГј" or u8"ГЌГ Г·Г ГІГј Г±ГЄГіГЇГЄГі"
                     if imgui.Button(btn_label, imgui.ImVec2(300, 52)) then
                         if #target_config == 0 then
-                            sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Список пуст!", -1)
+                            sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Г‘ГЇГЁГ±Г®ГЄ ГЇГіГ±ГІ!", -1)
                         else
                             if is_sell then
                                 RunState.selling = { active = true, stage = 'waiting_dialog', current_idx = 1, total = #sell_cfg, current_item = nil }
                                 watchShopProximity(function() return RunState.selling end)
                                 if lastSeenInteractPromptId then sendMarketInteract(lastSeenInteractPromptId) end
-                                sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Откройте лавку для автоматической продажи!", -1)
+                                sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}ГЋГІГЄГ°Г®Г©ГІГҐ Г«Г ГўГЄГі Г¤Г«Гї Г ГўГІГ®Г¬Г ГІГЁГ·ГҐГ±ГЄГ®Г© ГЇГ°Г®Г¤Г Г¦ГЁ!", -1)
                             else
                                 RunState.buying = { active = true, stage = 'waiting_dialog', current_idx = 1, total = #buy_cfg, current_item = nil }
                                 watchShopProximity(function() return RunState.buying end)
                                 if lastSeenInteractPromptId then sendMarketInteract(lastSeenInteractPromptId) end
-                                sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Откройте лавку для автоматической скупки!", -1)
+                                sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}ГЋГІГЄГ°Г®Г©ГІГҐ Г«Г ГўГЄГі Г¤Г«Гї Г ГўГІГ®Г¬Г ГІГЁГ·ГҐГ±ГЄГ®Г© Г±ГЄГіГЇГЄГЁ!", -1)
                             end
                             menu_open[0] = false
                         end
@@ -889,14 +889,14 @@ imgui.OnFrame(
 
                 if not is_sell then
                     imgui.SameLine()
-                    if imgui.Button(u8"Конфиги##openbuyconfigs", imgui.ImVec2(180, 52)) then
+                    if imgui.Button(u8"ГЉГ®Г­ГґГЁГЈГЁ##openbuyconfigs", imgui.ImVec2(180, 52)) then
                         buy_config_modal_open[0] = true
                     end
                 end
 
                 local search_buf = is_sell and filter_buf_sell or filter_buf_buy
                 imgui.PushItemWidth(420)
-                imgui.InputTextWithHint("##search_left", u8"Введите название товара для поиска...", search_buf, 256)
+                imgui.InputTextWithHint("##search_left", u8"Г‚ГўГҐГ¤ГЁГІГҐ Г­Г Г§ГўГ Г­ГЁГҐ ГІГ®ГўГ Г°Г  Г¤Г«Гї ГЇГ®ГЁГ±ГЄГ ...", search_buf, 256)
                 imgui.PopItemWidth()
                 imgui.SameLine()
                 if imgui.Button("X##clear_left", imgui.ImVec2(40, 40)) then
@@ -908,7 +908,7 @@ imgui.OnFrame(
 
                 local target_search_buf = is_sell and target_filter_sell or target_filter_buy
                 imgui.PushItemWidth(460)
-                local right_hint = is_sell and u8"Поиск в списке на продажу..." or u8"Поиск в списке скупки..."
+                local right_hint = is_sell and u8"ГЏГ®ГЁГ±ГЄ Гў Г±ГЇГЁГ±ГЄГҐ Г­Г  ГЇГ°Г®Г¤Г Г¦Гі..." or u8"ГЏГ®ГЁГ±ГЄ Гў Г±ГЇГЁГ±ГЄГҐ Г±ГЄГіГЇГЄГЁ..."
                 imgui.InputTextWithHint("##search_right", right_hint, target_search_buf, 128)
                 imgui.PopItemWidth()
                 imgui.SameLine()
@@ -923,7 +923,7 @@ imgui.OnFrame(
                 imgui.Columns(2, "TradeColumnsFB", false)
                 imgui.SetColumnWidth(0, 630)
                 local list_area_h = math.max(300, imgui.GetContentRegionAvail().y - 10)
-                imgui.Text(u8"Доступные товары:")
+                imgui.Text(u8"Г„Г®Г±ГІГіГЇГ­Г»ГҐ ГІГ®ГўГ Г°Г»:")
                 local left_child_id = is_sell and "LeftListFB_sell" or "LeftListFB_buy"
                 if imgui.BeginChild(left_child_id, imgui.ImVec2(610, list_area_h), true) then
                     local wheel = imgui.GetIO().MouseWheel
@@ -972,7 +972,7 @@ imgui.OnFrame(
                             local item = f.item
                             local i = f.idx
                             local disp = f.name
-                            if item.amount then disp = disp .. " [В наличии: " .. item.amount .. "]" end
+                            if item.amount then disp = disp .. " [Г‚ Г­Г Г«ГЁГ·ГЁГЁ: " .. item.amount .. "]" end
 
                             local already_added = false
                             for _, v in ipairs(target_config) do
@@ -999,16 +999,16 @@ imgui.OnFrame(
 
                         if last < total_f then imgui.Dummy(imgui.ImVec2(1, (total_f - last) * row_h)) end
                     else
-                        imgui.TextColored(Palette.text_secondary, u8"Список пуст. Нажмите 'Обновить список'")
+                        imgui.TextColored(Palette.text_secondary, u8"Г‘ГЇГЁГ±Г®ГЄ ГЇГіГ±ГІ. ГЌГ Г¦Г¬ГЁГІГҐ 'ГЋГЎГ­Г®ГўГЁГІГј Г±ГЇГЁГ±Г®ГЄ'")
                     end
                 end
                 imgui.EndChild()
 
                 imgui.NextColumn()
-                imgui.Text(is_sell and u8"Список для продажи:" or u8"Список для скупки:")
+                imgui.Text(is_sell and u8"Г‘ГЇГЁГ±Г®ГЄ Г¤Г«Гї ГЇГ°Г®Г¤Г Г¦ГЁ:" or u8"Г‘ГЇГЁГ±Г®ГЄ Г¤Г«Гї Г±ГЄГіГЇГЄГЁ:")
                 if is_sell then
                     imgui.SameLine()
-                    if imgui.Button(u8"Добавить всё##addall", imgui.ImVec2(200, 36)) then
+                    if imgui.Button(u8"Г„Г®ГЎГ ГўГЁГІГј ГўГ±Вё##addall", imgui.ImVec2(200, 36)) then
                         for _, item in ipairs(source_items) do
                             local already_added = false
                             for _, v in ipairs(target_config) do
@@ -1030,7 +1030,7 @@ imgui.OnFrame(
                     end
                 end
                 imgui.SameLine()
-                if imgui.Button(u8"Очистить всё##clearall", imgui.ImVec2(200, 36)) then
+                if imgui.Button(u8"ГЋГ·ГЁГ±ГІГЁГІГј ГўГ±Вё##clearall", imgui.ImVec2(200, 36)) then
                     for k in pairs(target_config) do target_config[k] = nil end
                     writeJsonToDisk(cfg_path, target_config)
                     if is_sell then qty_bufs_sell = {} cost_bufs_sell = {} else qty_bufs_buy = {} cost_bufs_buy = {} end
@@ -1089,9 +1089,9 @@ imgui.OnFrame(
                         imgui.TextColored(Palette.text_secondary, u8"")
                     end
                     imgui.SetCursorPosX(COL_AMT_X)
-                    imgui.TextColored(Palette.text_secondary, u8"Кол-во")
+                    imgui.TextColored(Palette.text_secondary, u8"ГЉГ®Г«-ГўГ®")
                     imgui.SameLine(COL_PRICE_X)
-                    imgui.TextColored(Palette.text_secondary, u8"Цена")
+                    imgui.TextColored(Palette.text_secondary, u8"Г–ГҐГ­Г ")
                     imgui.Separator()
 
                     for i, item in ipairs(target_config) do
@@ -1120,7 +1120,7 @@ imgui.OnFrame(
                             end
                             imgui.PopItemWidth()
                             imgui.SameLine(COL_UNIT1_X)
-                            imgui.Text(u8"шт")
+                            imgui.Text(u8"ГёГІ")
 
                             if not price_bufs[i] then price_bufs[i] = ffi.new('char[16]', tostring(item.price or 0)) end
                             imgui.SameLine(COL_PRICE_X)
@@ -1131,7 +1131,7 @@ imgui.OnFrame(
                             end
                             imgui.PopItemWidth()
                             imgui.SameLine(COL_UNIT2_X)
-                            imgui.Text(u8"руб")
+                            imgui.Text(u8"Г°ГіГЎ")
 
                             imgui.SameLine(COL_BTN_X)
                             if imgui.Button(u8"X##rm" .. row_id, imgui.ImVec2(BTN_W, 40)) then
@@ -1146,7 +1146,7 @@ imgui.OnFrame(
                         writeJsonToDisk(cfg_path, target_config)
                     end
                     if #target_config == 0 then
-                        imgui.TextColored(Palette.text_secondary, u8"Список пуст. Добавьте товары из левого списка")
+                        imgui.TextColored(Palette.text_secondary, u8"Г‘ГЇГЁГ±Г®ГЄ ГЇГіГ±ГІ. Г„Г®ГЎГ ГўГјГІГҐ ГІГ®ГўГ Г°Г» ГЁГ§ Г«ГҐГўГ®ГЈГ® Г±ГЇГЁГ±ГЄГ ")
                     end
                 end
                 imgui.EndChild()
@@ -1174,14 +1174,14 @@ imgui.OnFrame(
                 imgui.PushStyleVarVec2(imgui.StyleVar.ItemSpacing, imgui.ImVec2(10.0, 15.0))
                 imgui.Spacing()
 
-                imgui.TextColored(Palette.accent_primary, u8"Автоматизация имени")
-                if imgui.Checkbox(u8"Авто-выставление названия лавки##fbautoname", b_auto_name) then
+                imgui.TextColored(Palette.accent_primary, u8"ГЂГўГІГ®Г¬Г ГІГЁГ§Г Г¶ГЁГї ГЁГ¬ГҐГ­ГЁ")
+                if imgui.Checkbox(u8"ГЂГўГІГ®-ГўГ»Г±ГІГ ГўГ«ГҐГ­ГЁГҐ Г­Г Г§ГўГ Г­ГЁГї Г«Г ГўГЄГЁ##fbautoname", b_auto_name) then
                     Prefs.auto_name = b_auto_name[0]
                     writeJsonToDisk(FILE_SETTINGS, Prefs)
                 end
                 imgui.Spacing()
 
-                imgui.TextColored(Palette.text_secondary, u8"Название вашей лавки:")
+                imgui.TextColored(Palette.text_secondary, u8"ГЌГ Г§ГўГ Г­ГЁГҐ ГўГ ГёГҐГ© Г«Г ГўГЄГЁ:")
                 imgui.PushItemWidth(520)
                 if imgui.InputText("##shopnamefb", buf_shop_name, 64) then
                     Prefs.shop_name = ffi.string(buf_shop_name)
@@ -1193,19 +1193,19 @@ imgui.OnFrame(
                 imgui.Separator()
                 imgui.Spacing()
 
-                imgui.TextColored(Palette.accent_primary, u8"Задержки / Скорость")
+                imgui.TextColored(Palette.accent_primary, u8"Г‡Г Г¤ГҐГ°Г¦ГЄГЁ / Г‘ГЄГ®Г°Г®Г±ГІГј")
                 imgui.Spacing()
 
-                imgui.TextColored(Palette.text_secondary, u8"КД между диалогами (скупка): чем меньше, тем быстрее")
+                imgui.TextColored(Palette.text_secondary, u8"ГЉГ„ Г¬ГҐГ¦Г¤Гі Г¤ГЁГ Г«Г®ГЈГ Г¬ГЁ (Г±ГЄГіГЇГЄГ ): Г·ГҐГ¬ Г¬ГҐГ­ГјГёГҐ, ГІГҐГ¬ ГЎГ»Г±ГІГ°ГҐГҐ")
                 imgui.PushItemWidth(520)
-                imgui.SliderInt("##dialogdelayfb", i_dialog_delay, 0, 2000, u8"%d мс")
+                imgui.SliderInt("##dialogdelayfb", i_dialog_delay, 0, 2000, u8"%d Г¬Г±")
                 imgui.PopItemWidth()
                 if i_dialog_delay[0] < 0 then i_dialog_delay[0] = 0 end
                 imgui.Spacing()
 
-                imgui.TextColored(Palette.text_secondary, u8"Задержка выставления через CEF (продажа): чем ниже, тем быстрее")
+                imgui.TextColored(Palette.text_secondary, u8"Г‡Г Г¤ГҐГ°Г¦ГЄГ  ГўГ»Г±ГІГ ГўГ«ГҐГ­ГЁГї Г·ГҐГ°ГҐГ§ CEF (ГЇГ°Г®Г¤Г Г¦Г ): Г·ГҐГ¬ Г­ГЁГ¦ГҐ, ГІГҐГ¬ ГЎГ»Г±ГІГ°ГҐГҐ")
                 imgui.PushItemWidth(520)
-                imgui.SliderInt("##cefdelayfb", i_cef_delay, 200, 5000, u8"%d мс")
+                imgui.SliderInt("##cefdelayfb", i_cef_delay, 200, 5000, u8"%d Г¬Г±")
                 imgui.PopItemWidth()
                 if i_cef_delay[0] < 100 then i_cef_delay[0] = 100 end
 
@@ -1215,30 +1215,30 @@ imgui.OnFrame(
                 imgui.Separator()
                 imgui.Spacing()
 
-                imgui.TextColored(Palette.accent_primary, u8"Плавающая кнопка Central Market")
+                imgui.TextColored(Palette.accent_primary, u8"ГЏГ«Г ГўГ ГѕГ№Г Гї ГЄГ­Г®ГЇГЄГ  Central Market")
                 imgui.Spacing()
 
-                if imgui.Checkbox(u8"Показывать кнопку на экране##fbshowfloat", b_show_float_button) then
+                if imgui.Checkbox(u8"ГЏГ®ГЄГ Г§Г»ГўГ ГІГј ГЄГ­Г®ГЇГЄГі Г­Г  ГЅГЄГ°Г Г­ГҐ##fbshowfloat", b_show_float_button) then
                     Prefs.show_float_button = b_show_float_button[0]
                     writeJsonToDisk(FILE_SETTINGS, Prefs)
                 end
 
-                if imgui.Checkbox(u8"Показывать кнопку даже при открытом меню##fbalwaysvis", b_float_always_visible) then
+                if imgui.Checkbox(u8"ГЏГ®ГЄГ Г§Г»ГўГ ГІГј ГЄГ­Г®ГЇГЄГі Г¤Г Г¦ГҐ ГЇГ°ГЁ Г®ГІГЄГ°Г»ГІГ®Г¬ Г¬ГҐГ­Гѕ##fbalwaysvis", b_float_always_visible) then
                     Prefs.float_btn_always_visible = b_float_always_visible[0]
                     writeJsonToDisk(FILE_SETTINGS, Prefs)
                 end
 
                 imgui.Spacing()
-                if imgui.Checkbox(u8"Режим перемещения кнопки (потяните кнопку)##fbmovemode", b_float_btn_move_mode) then
+                if imgui.Checkbox(u8"ГђГҐГ¦ГЁГ¬ ГЇГҐГ°ГҐГ¬ГҐГ№ГҐГ­ГЁГї ГЄГ­Г®ГЇГЄГЁ (ГЇГ®ГІГїГ­ГЁГІГҐ ГЄГ­Г®ГЇГЄГі)##fbmovemode", b_float_btn_move_mode) then
                     if not b_float_btn_move_mode[0] then
                         writeJsonToDisk(FILE_SETTINGS, Prefs)
-                        sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Позиция кнопки сохранена!", -1)
+                        sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}ГЏГ®Г§ГЁГ¶ГЁГї ГЄГ­Г®ГЇГЄГЁ Г±Г®ГµГ°Г Г­ГҐГ­Г !", -1)
                     end
                 end
 
                 imgui.Spacing()
                 local settings_btn_w = (imgui.GetContentRegionAvail().x - 10) / 2
-                if imgui.Button(u8"Сбросить позицию кнопки", imgui.ImVec2(settings_btn_w, 52)) then
+                if imgui.Button(u8"Г‘ГЎГ°Г®Г±ГЁГІГј ГЇГ®Г§ГЁГ¶ГЁГѕ ГЄГ­Г®ГЇГЄГЁ", imgui.ImVec2(settings_btn_w, 52)) then
                     Prefs.float_btn_x = FLOAT_BTN_DEFAULT_X
                     Prefs.float_btn_y = FLOAT_BTN_DEFAULT_Y
                     writeJsonToDisk(FILE_SETTINGS, Prefs)
@@ -1246,7 +1246,7 @@ imgui.OnFrame(
                 imgui.SameLine()
                 imgui.Dummy(imgui.ImVec2(10, 0))
                 imgui.SameLine()
-                if imgui.Button(u8"Сохранить настройки", imgui.ImVec2(settings_btn_w, 52)) then
+                if imgui.Button(u8"Г‘Г®ГµГ°Г Г­ГЁГІГј Г­Г Г±ГІГ°Г®Г©ГЄГЁ", imgui.ImVec2(settings_btn_w, 52)) then
                     Prefs.auto_name = b_auto_name[0]
                     Prefs.shop_name = ffi.string(buf_shop_name)
                     Prefs.dialog_delay = i_dialog_delay[0]
@@ -1254,7 +1254,7 @@ imgui.OnFrame(
                     Prefs.show_float_button = b_show_float_button[0]
                     Prefs.float_btn_always_visible = b_float_always_visible[0]
                     writeJsonToDisk(FILE_SETTINGS, Prefs)
-                    sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Настройки успешно сохранены!", -1)
+                    sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}ГЌГ Г±ГІГ°Г®Г©ГЄГЁ ГіГ±ГЇГҐГёГ­Г® Г±Г®ГµГ°Г Г­ГҐГ­Г»!", -1)
                 end
 
                 imgui.Dummy(imgui.ImVec2(0, 15))
@@ -1274,7 +1274,7 @@ imgui.OnFrame(
                 for _, v in ipairs(target_footer) do
                     total = total + (tonumber(v.price) or 0) * (tonumber(v.amount) or 0)
                 end
-                local footer_text = string.format(is_sell_footer and "Общая сумма продажи: %s руб" or "Общая сумма скупки: %s руб", formatCash(total))
+                local footer_text = string.format(is_sell_footer and "ГЋГЎГ№Г Гї Г±ГіГ¬Г¬Г  ГЇГ°Г®Г¤Г Г¦ГЁ: %s Г°ГіГЎ" or "ГЋГЎГ№Г Гї Г±ГіГ¬Г¬Г  Г±ГЄГіГЇГЄГЁ: %s Г°ГіГЎ", formatCash(total))
                 local ftw = imgui.CalcTextSize(u8(footer_text)).x
                 imgui.SameLine()
                 imgui.SetCursorPosX(window_width - ftw - 10)
@@ -1299,7 +1299,7 @@ imgui.OnFrame(
             imgui.PushStyleColor(imgui.Col.Border, Palette.accent_primary)
             imgui.PushStyleVarFloat(imgui.StyleVar.WindowBorderSize, 1.5)
             local modal_flags = imgui.WindowFlags.NoTitleBar + imgui.WindowFlags.NoCollapse + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoScrollbar
-            if imgui.Begin(u8"Конфиги скупки", buy_config_modal_open, modal_flags) then
+            if imgui.Begin(u8"ГЉГ®Г­ГґГЁГЈГЁ Г±ГЄГіГЇГЄГЁ", buy_config_modal_open, modal_flags) then
                 local modal_win_w = imgui.GetWindowWidth()
 
                 imgui.SetCursorPos(imgui.ImVec2(0, 0))
@@ -1316,7 +1316,7 @@ imgui.OnFrame(
                     buy_config_modal_open[0] = false
                     ffi.fill(buy_profile_name_buf, ffi.sizeof(buy_profile_name_buf))
                 end
-                local modal_title = u8"Конфиги скупки"
+                local modal_title = u8"ГЉГ®Г­ГґГЁГЈГЁ Г±ГЄГіГЇГЄГЁ"
                 local modal_title_w = imgui.CalcTextSize(modal_title).x
                 imgui.SetCursorPosX((modal_win_w - modal_title_w) / 2)
                 imgui.SetCursorPosY(10)
@@ -1325,12 +1325,12 @@ imgui.OnFrame(
                 imgui.Separator()
                 imgui.Spacing()
 
-                imgui.TextColored(Palette.accent_primary, u8"Сохранить текущий список скупки как:")
+                imgui.TextColored(Palette.accent_primary, u8"Г‘Г®ГµГ°Г Г­ГЁГІГј ГІГҐГЄГіГ№ГЁГ© Г±ГЇГЁГ±Г®ГЄ Г±ГЄГіГЇГЄГЁ ГЄГ ГЄ:")
                 imgui.PushItemWidth(-140)
-                imgui.InputTextWithHint("##newprofilename", u8"Название нового профиля...", buy_profile_name_buf, 64)
+                imgui.InputTextWithHint("##newprofilename", u8"ГЌГ Г§ГўГ Г­ГЁГҐ Г­Г®ГўГ®ГЈГ® ГЇГ°Г®ГґГЁГ«Гї...", buy_profile_name_buf, 64)
                 imgui.PopItemWidth()
                 imgui.SameLine()
-                if imgui.Button(u8"Сохранить", imgui.ImVec2(120, 40)) then
+                if imgui.Button(u8"Г‘Г®ГµГ°Г Г­ГЁГІГј", imgui.ImVec2(120, 40)) then
                     local pname = ffi.string(buy_profile_name_buf)
                     if pname ~= "" then
                         local ok, copy = pcall(cjson.decode, cjson.encode(buy_cfg))
@@ -1338,7 +1338,7 @@ imgui.OnFrame(
                             buy_profiles[pname] = copy
                             writeJsonToDisk(FILE_BUY_PROFILES, buy_profiles)
                             selected_buy_profile = pname
-                            sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Профиль сохранён: " .. u8:decode(pname), -1)
+                            sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}ГЏГ°Г®ГґГЁГ«Гј Г±Г®ГµГ°Г Г­ВёГ­: " .. u8:decode(pname), -1)
                         end
                     end
                 end
@@ -1346,7 +1346,7 @@ imgui.OnFrame(
                 imgui.Spacing()
                 imgui.Separator()
                 imgui.Spacing()
-                imgui.TextColored(Palette.accent_primary, u8"Сохранённые профили:")
+                imgui.TextColored(Palette.accent_primary, u8"Г‘Г®ГµГ°Г Г­ВёГ­Г­Г»ГҐ ГЇГ°Г®ГґГЁГ«ГЁ:")
                 imgui.Spacing()
 
                 local profile_names = {}
@@ -1355,7 +1355,7 @@ imgui.OnFrame(
 
                 imgui.BeginChild("##BuyProfilesList", imgui.ImVec2(-1, -60), true)
                 if #profile_names == 0 then
-                    imgui.TextColored(Palette.text_secondary, u8"Пока нет сохранённых профилей")
+                    imgui.TextColored(Palette.text_secondary, u8"ГЏГ®ГЄГ  Г­ГҐГІ Г±Г®ГµГ°Г Г­ВёГ­Г­Г»Гµ ГЇГ°Г®ГґГЁГ«ГҐГ©")
                 end
                 for _, pname in ipairs(profile_names) do
                     local is_sel = (pname == selected_buy_profile)
@@ -1370,7 +1370,7 @@ imgui.OnFrame(
                 imgui.Spacing()
 
                 local modal_btn_w = (imgui.GetContentRegionAvail().x - 10) / 2
-                if imgui.Button(u8"Загрузить##loadprofile", imgui.ImVec2(modal_btn_w, 44)) then
+                if imgui.Button(u8"Г‡Г ГЈГ°ГіГ§ГЁГІГј##loadprofile", imgui.ImVec2(modal_btn_w, 44)) then
                     if selected_buy_profile and buy_profiles[selected_buy_profile] then
                         local ok, copy = pcall(cjson.decode, cjson.encode(buy_profiles[selected_buy_profile]))
                         if ok and type(copy) == "table" then
@@ -1379,12 +1379,12 @@ imgui.OnFrame(
                             writeJsonToDisk(FILE_CFG_BUY, buy_cfg)
                             qty_bufs_buy = {}
                             cost_bufs_buy = {}
-                            sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Профиль загружен: " .. u8:decode(selected_buy_profile), -1)
+                            sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}ГЏГ°Г®ГґГЁГ«Гј Г§Г ГЈГ°ГіГ¦ГҐГ­: " .. u8:decode(selected_buy_profile), -1)
                         end
                     end
                 end
                 imgui.SameLine()
-                if imgui.Button(u8"Удалить##delprofile", imgui.ImVec2(modal_btn_w, 44)) then
+                if imgui.Button(u8"Г“Г¤Г Г«ГЁГІГј##delprofile", imgui.ImVec2(modal_btn_w, 44)) then
                     if selected_buy_profile then
                         buy_profiles[selected_buy_profile] = nil
                         writeJsonToDisk(FILE_BUY_PROFILES, buy_profiles)
@@ -1402,7 +1402,7 @@ imgui.OnFrame(
 function ToggleMenu()
     menu_open[0] = not menu_open[0]
     if menu_open[0] then
-        sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Меню открыто!", -1)
+        sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}ГЊГҐГ­Гѕ Г®ГІГЄГ°Г»ГІГ®!", -1)
     end
 end
 
@@ -1514,7 +1514,7 @@ imgui.OnFrame(
 
             if b_float_btn_move_mode[0] then
                 imgui.PushFont(fnt_main)
-                local hint = u8"Перетащите кнопку"
+                local hint = u8"ГЏГҐГ°ГҐГІГ Г№ГЁГІГҐ ГЄГ­Г®ГЇГЄГі"
                 local hsz = imgui.CalcTextSize(hint)
                 dl:AddRectFilled(imgui.ImVec2(p.x, p.y - hsz.y - 10), imgui.ImVec2(p.x + hsz.x + 16, p.y - 4), imgui.ColorConvertFloat4ToU32(imgui.ImVec4(0,0,0,0.75)), 6.0)
                 dl:AddText(imgui.ImVec2(p.x + 8, p.y - hsz.y - 7), imgui.ColorConvertFloat4ToU32(gold_top), hint)
@@ -1543,7 +1543,7 @@ function main()
                         wait_start = 0
                         processSellingCoroutine()
                     elseif now - wait_start > 10.0 then
-                        sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Ошибка: Данные лавки не поступили (таймаут).", -1)
+                        sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}ГЋГёГЁГЎГЄГ : Г„Г Г­Г­Г»ГҐ Г«Г ГўГЄГЁ Г­ГҐ ГЇГ®Г±ГІГіГЇГЁГ«ГЁ (ГІГ Г©Г¬Г ГіГІ).", -1)
                         RunState.selling.active = false
                         wait_start = 0
                     end
@@ -1559,7 +1559,7 @@ function main()
     sampRegisterChatCommand('centralmarket', ToggleMenu)
     sampRegisterChatCommand('cm', ToggleMenu)
 
-    sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}загружен, {c0c0c0}/cm{FFFFFF} - открыть меню {FF0000}By {00FFFF}Edward", -1)
+    sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Г§Г ГЈГ°ГіГ¦ГҐГ­, {c0c0c0}/cm{FFFFFF} - Г®ГІГЄГ°Г»ГІГј Г¬ГҐГ­Гѕ {FF0000}By {00FFFF}Edward", -1)
 
     while true do
         wait(0)
@@ -1644,7 +1644,7 @@ function renderTargetCard(item, is_sell, index, target_table)
     dl:AddText(imgui.ImVec2(text_x, p.y + 12), imgui.ColorConvertFloat4ToU32(Palette.text_primary), name_str)
     dl:PopClipRect()
 
-    local price_str = formatCash(item.price) .. " $  •  " .. (item.amount or 1) .. " шт."
+    local price_str = formatCash(item.price) .. " $  В•  " .. (item.amount or 1) .. " ГёГІ."
     dl:AddText(imgui.ImVec2(text_x, p.y + 40), imgui.ColorConvertFloat4ToU32(accent), price_str)
     imgui.PopFont()
 
@@ -1724,7 +1724,7 @@ function renderSourceCard(item, is_sell, index, target_table)
     
     if item.amount then
         dl:AddText(imgui.ImVec2(text_x, p.y + 10), imgui.ColorConvertFloat4ToU32(is_added and Palette.text_secondary or Palette.text_primary), name_str)
-        dl:AddText(imgui.ImVec2(text_x, p.y + 36), imgui.ColorConvertFloat4ToU32(Palette.text_secondary), u8"В наличии: " .. item.amount)
+        dl:AddText(imgui.ImVec2(text_x, p.y + 36), imgui.ColorConvertFloat4ToU32(Palette.text_secondary), u8"Г‚ Г­Г Г«ГЁГ·ГЁГЁ: " .. item.amount)
     else
         dl:AddText(imgui.ImVec2(text_x, text_y), imgui.ColorConvertFloat4ToU32(Palette.text_primary), name_str)
     end
@@ -1746,18 +1746,18 @@ function formatCash(amount)
 end
 
 function processSellingCoroutine()
-    sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Активных слотов в лавке: " .. #RunState.selling.available_items .. ". Ищем совпадения...", -1)
+    sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}ГЂГЄГІГЁГўГ­Г»Гµ Г±Г«Г®ГІГ®Гў Гў Г«Г ГўГЄГҐ: " .. #RunState.selling.available_items .. ". Г€Г№ГҐГ¬ Г±Г®ГўГЇГ Г¤ГҐГ­ГЁГї...", -1)
     wait(1000) 
     
     local items_exhibited = 0
     
     for i, config_item in ipairs(sell_cfg) do
         if not RunState.selling.active then 
-            sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Выставление принудительно остановлено!", -1)
+            sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Г‚Г»Г±ГІГ ГўГ«ГҐГ­ГЁГҐ ГЇГ°ГЁГ­ГіГ¤ГЁГІГҐГ«ГјГ­Г® Г®Г±ГІГ Г­Г®ГўГ«ГҐГ­Г®!", -1)
             break 
         end
         
-        local display_name = config_item.name and tostring(config_item.name) or "Неизвестный товар"
+        local display_name = config_item.name and tostring(config_item.name) or "ГЌГҐГЁГ§ГўГҐГ±ГІГ­Г»Г© ГІГ®ГўГ Г°"
         
         local target_model_id = tonumber(config_item.model_id)
         if not target_model_id then
@@ -1787,7 +1787,7 @@ function processSellingCoroutine()
                 RunState.selling.current_item = config_item
                 RunState.selling.stage = 'waiting_input'
                 
-                sampAddChatMessage(string.format("{FF0000}| {FFFF00} Central Market {FFFFFF}Выставляем: %s (Слот: %d)", display_name, match.slot), -1)
+                sampAddChatMessage(string.format("{FF0000}| {FFFF00} Central Market {FFFFFF}Г‚Г»Г±ГІГ ГўГ«ГїГҐГ¬: %s (Г‘Г«Г®ГІ: %d)", display_name, match.slot), -1)
                 
                 sendMobileCEFClick(match.slot, match.model_id, match.amount)
                 
@@ -1796,7 +1796,7 @@ function processSellingCoroutine()
                     wait(100)
                     wait_time = wait_time + 100
                     if wait_time > 9000 then 
-                        sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Таймаут окна ввода цены для: " .. display_name, -1)
+                        sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Г’Г Г©Г¬Г ГіГІ Г®ГЄГ­Г  ГўГўГ®Г¤Г  Г¶ГҐГ­Г» Г¤Г«Гї: " .. display_name, -1)
                         break 
                     end
                 end
@@ -1807,13 +1807,13 @@ function processSellingCoroutine()
                 end
             end
         else
-            sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Пропущен: " .. display_name .. " (Не найден или серый слот)", -1)
+            sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}ГЏГ°Г®ГЇГіГ№ГҐГ­: " .. display_name .. " (ГЌГҐ Г­Г Г©Г¤ГҐГ­ ГЁГ«ГЁ Г±ГҐГ°Г»Г© Г±Г«Г®ГІ)", -1)
         end
     end
     
     if RunState.selling.active then
         RunState.selling.stage = 'closing'
-        sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Закрытие меню лавки...", -1)
+        sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Г‡Г ГЄГ°Г»ГІГЁГҐ Г¬ГҐГ­Гѕ Г«Г ГўГЄГЁ...", -1)
         
         local function sendShopClosePacket(subid, flag)
             local bs = raknetNewBitStream()
@@ -1883,7 +1883,7 @@ function startInventoryScan()
     RunState.inventory_scan.has_received_data = false
     RunState.inventory_scan.last_packet_time = 0
     RunState.inventory_scan.current_dialog_id = nil
-    sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Открываю инвентарь для сканирования...", -1)
+    sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}ГЋГІГЄГ°Г»ГўГ Гѕ ГЁГ­ГўГҐГ­ГІГ Г°Гј Г¤Г«Гї Г±ГЄГ Г­ГЁГ°Г®ГўГ Г­ГЁГї...", -1)
     sampSendChat("/invent")
     lua_thread.create(function()
         local start_time = os.clock()
@@ -1897,7 +1897,7 @@ function startInventoryScan()
                 end
             end
             if now - start_time > 30.0 and not RunState.inventory_scan.has_received_data then
-                sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Ошибка: Таймаут. Вы не открыли инвентарь.", -1)
+                sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}ГЋГёГЁГЎГЄГ : Г’Г Г©Г¬Г ГіГІ. Г‚Г» Г­ГҐ Г®ГІГЄГ°Г»Г«ГЁ ГЁГ­ГўГҐГ­ГІГ Г°Гј.", -1)
                 RunState.inventory_scan.active = false
                 menu_open[0] = true
                 break
@@ -1921,7 +1921,7 @@ function finishInventoryScan()
     writeJsonToDisk(FILE_INVENTORY, stock_items)
     list_cache_sell.query = nil
     
-    sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Инвентарь считан: " .. #stock_items .. " слотов.", -1)
+    sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}Г€Г­ГўГҐГ­ГІГ Г°Гј Г±Г·ГЁГІГ Г­: " .. #stock_items .. " Г±Г«Г®ГІГ®Гў.", -1)
     
     menu_open[0] = true
 end
@@ -1998,9 +1998,9 @@ function processBuyingPage(dialog_text, dialog_id)
     for line in dialog_text:gmatch("[^\r\n]+") do
         local clean = stripColorTags(line)
         
-        if clean:find("Следующая страница") or clean:find("^%s*>") then
+        if clean:find("Г‘Г«ГҐГ¤ГіГѕГ№Г Гї Г±ГІГ°Г Г­ГЁГ¶Г ") or clean:find("^%s*>") then
             next_page_idx = current_idx
-        elseif not clean:find("Поиск предмета") and not clean:find("Поиск по категориям") and not clean:find("Предыдущая страница") then
+        elseif not clean:find("ГЏГ®ГЁГ±ГЄ ГЇГ°ГҐГ¤Г¬ГҐГІГ ") and not clean:find("ГЏГ®ГЁГ±ГЄ ГЇГ® ГЄГ ГІГҐГЈГ®Г°ГЁГїГ¬") and not clean:find("ГЏГ°ГҐГ¤Г»Г¤ГіГ№Г Гї Г±ГІГ°Г Г­ГЁГ¶Г ") then
             local raw_name, item_id = clean:match("^(.-)%s*%[(%d+)%]$")
             if raw_name and item_id then
                 local name = raw_name
@@ -2046,7 +2046,7 @@ function finishBuyingScan()
     writeJsonToDisk(FILE_CATALOG, catalog_items)
     writeJsonToDisk(FILE_NAMES, name_lookup)
     
-    sampAddChatMessage('{FF0000}| {FFFF00} Central Market {FFFFFF}База товаров обновлена: ' .. #catalog_items .. ' шт.', -1)
+    sampAddChatMessage('{FF0000}| {FFFF00} Central Market {FFFFFF}ГЃГ Г§Г  ГІГ®ГўГ Г°Г®Гў Г®ГЎГ­Г®ГўГ«ГҐГ­Г : ' .. #catalog_items .. ' ГёГІ.', -1)
     list_cache_buy.query = nil
     
     if RunState.buying_scan.current_dialog_id then 
@@ -2072,7 +2072,7 @@ function stopBuyingScan()
     if RunState.buying_scan.current_dialog_id then 
         sampSendDialogResponse(RunState.buying_scan.current_dialog_id, 0, 0, "") 
     end
-    sampAddChatMessage('{FF0000}| {FFFF00} Central Market {FFFFFF}Сканирование прервано', -1)
+    sampAddChatMessage('{FF0000}| {FFFF00} Central Market {FFFFFF}Г‘ГЄГ Г­ГЁГ°Г®ГўГ Г­ГЁГҐ ГЇГ°ГҐГ°ГўГ Г­Г®', -1)
     
     RunState.buying_scan.stage = 'closing'
     lua_thread.create(function()
@@ -2094,7 +2094,7 @@ function watchShopProximity(state_getter, timeout_ms)
         if st.active and st.stage == 'waiting_dialog' then
             st.active = false
             menu_open[0] = true
-            sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}- Вы не рядом с лавкой, открыть диалог не удалось", -1)
+            sampAddChatMessage("{FF0000}| {FFFF00} Central Market {FFFFFF}- Г‚Г» Г­ГҐ Г°ГїГ¤Г®Г¬ Г± Г«Г ГўГЄГ®Г©, Г®ГІГЄГ°Г»ГІГј Г¤ГЁГ Г«Г®ГЈ Г­ГҐ ГіГ¤Г Г«Г®Г±Гј", -1)
         end
     end)
 end
@@ -2123,7 +2123,7 @@ end
 
 function normalizeItemLabel(name)
     local original = name
-    name = name:gsub("{%x%x%x%x%x%x}", ""):gsub("%[.-%]", ""):gsub("^[оеш]?[втг]%s+", "")
+    name = name:gsub("{%x%x%x%x%x%x}", ""):gsub("%[.-%]", ""):gsub("^[Г®ГҐГё]?[ГўГІГЈ]%s+", "")
     return name:match("^%s*(.-)%s*$") or ""
 end
 
