@@ -107,7 +107,7 @@
     },
     {
       "name": "Truck Helper",
-      "file": "Truck Helper.lua",
+      "file": "Truck Helper Mobile.lua",
       "description": "Помощник дальнобойщика: доход, подбор заказов и статистика",
       "author": "Stalin",
       "version": "1.0",
